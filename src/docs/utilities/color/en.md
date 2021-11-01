@@ -5,6 +5,7 @@ description: Inkline uses a beautiful, consistent color scheme across the framew
 
 <script setup>
 import * as examples from './examples';
+import {ColorBrandBackgroundExample} from './examples';
 </script>
 
 
@@ -17,6 +18,8 @@ import * as examples from './examples';
 Attract your user's attention using brand colors. The main colors of Inkline used for branding are:
 
 <example type="color-utilities" :component="examples.ColorBrandBackgroundExample" :html="examples.ColorBrandBackgroundExampleHTML"></example>
+
+<ColorBrandBackgroundExample></ColorBrandBackgroundExample>
 
 <example type="color-utilities" :component="examples.ColorBrandPrimaryBackgroundExample" :html="examples.ColorBrandPrimaryBackgroundExampleHTML"></example>
 

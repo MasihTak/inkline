@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import 'uno.css';
 
+import ColorDocs from '../docs/utilities/color/en.md';
 import { Inkline } from '../plugin';
 import * as components from '../components';
 import '@inkline/inkline/inkline.scss';
@@ -71,7 +73,7 @@ const routes = [
     { name: 'docs-components-tooltip', path: '/docs/components/tooltip', component: () => import('../components/ITooltip/docs/en.md') },
     { name: 'docs-utilities-border', path: '/docs/utilities/border', component: () => import('../docs/utilities/border/en.md') },
     { name: 'docs-utilities-clearfix', path: '/docs/utilities/clearfix', component: () => import('../docs/utilities/clearfix/en.md') },
-    { name: 'docs-utilities-color', path: '/docs/utilities/color', component: () => import('../docs/utilities/color/en.md') },
+    { name: 'docs-utilities-color', path: '/docs/utilities/color', component: () => ColorDocs },
     { name: 'docs-utilities-display', path: '/docs/utilities/display', component: () => import('../docs/utilities/display/en.md') },
     { name: 'docs-utilities-embed', path: '/docs/utilities/embed', component: () => import('../docs/utilities/embed/en.md') },
     { name: 'docs-utilities-flex', path: '/docs/utilities/flex', component: () => import('../docs/utilities/flex/en.md')  },

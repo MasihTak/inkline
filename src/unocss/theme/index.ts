@@ -1,0 +1,29 @@
+import { colors } from './colors';
+import { fontFamily, fontSize, letterSpacing, lineHeight } from './typography';
+import { breakpoints } from './breakpoints';
+import { borderRadius } from './border';
+import { textShadow } from './misc';
+
+export * from './colors';
+
+export interface Theme {
+    borderRadius?: Record<string, string>
+    breakpoints?: Record<string, string>
+    colors?: Record<string, string | Record<string, string>>
+    fontFamily?: Record<string, string>
+    fontSize?: Record<string, [string, string]>
+    lineHeight?: Record<string, string>
+    letterSpacing?: Record<string, string>
+    textShadow?: Record<string, string>
+}
+
+export const theme: Theme = {
+    colors,
+    fontFamily,
+    fontSize,
+    breakpoints,
+    borderRadius,
+    lineHeight,
+    letterSpacing,
+    textShadow,
+};
