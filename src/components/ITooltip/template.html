@@ -27,9 +27,10 @@
             aria-live="polite"
             :id="`${name}-popup`"
             :aria-hidden="visible ? 'false' : 'true'"
+            :style="popupStyles"
             v-show="visible"
         >
-            <span data-popper-arrow v-if="arrow" />
+            <span ref="arrow" :style="arrowStyles" data-popper-arrow v-if="arrow" />
             <slot name="body" />
         </div>
     </transition>

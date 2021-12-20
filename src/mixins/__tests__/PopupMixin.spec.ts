@@ -7,7 +7,7 @@ describe('mixins', () => {
         describe('methods', () => {
             describe('createPopper()', () => {
                 it('should create popper instance using base modifiers', async () => {
-                    const spy = jest.spyOn(PopupMixinModule, 'useBaseModifiers');
+                    const spy = jest.spyOn(PopupMixinModule, 'useBaseMiddleware');
 
                     const wrapper = createMockInstance(PopupMixin, {
                         $refs: {
@@ -38,7 +38,7 @@ describe('mixins', () => {
 
             describe('destroyPopper()', () => {
                 it('should destroy popper instance', async () => {
-                    const spy = jest.spyOn(PopupMixinModule, 'useBaseModifiers');
+                    const spy = jest.spyOn(PopupMixinModule, 'useBaseMiddleware');
 
                     const wrapper = createMockInstance(PopupMixin, {
                         $refs: {

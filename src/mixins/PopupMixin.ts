@@ -1,53 +1,37 @@
 import { defineComponent } from 'vue';
-import { createPopper, Instance, Placement } from '@popperjs/core';
-
-export const offsetModifier = (offset: number) => ({
-    name: 'offset',
-    options: {
-        offset: [0, offset]
-    }
-});
-
-export const arrowModifier = () => ({
-    name: 'arrow',
-    options: {
-        padding: 6 // padding from the edges of the popper
-    }
-});
-
-export const preventOverflowModifier = () => ({
-    name: 'preventOverflow',
-    options: {
-        padding: 8 // padding from the edges of the viewport
-    }
-});
-
-export const computeStylesModifier = () => ({
-    name: 'computeStyles',
-    options: {
-        gpuAcceleration: false,
-        adaptive: false // true by default
-    }
-});
+import {
+    computePosition,
+    offset as offsetMiddleware,
+    arrow as arrowMiddleware,
+    shift as shiftMiddleware,
+    flip as flipMiddleware
+} from '@floating-ui/dom';
+import { Placement } from '@floating-ui/core';
 
 export const sameWidthModifier = () => ({
     name: 'sameWidth',
-    enabled: true,
-    phase: 'beforeWrite',
-    requires: ['computeStyles'],
-    fn: ({ state }: { state: any }) => {
-        state.styles.popper.width = `${state.rects.reference.width}px`;
-    },
-    effect ({ state }: { state: any }) {
-        state.elements.popper.style.width = `${state.elements.reference.offsetWidth}px`;
+    fn: (middlewareArguments: any) => {
+        // state.styles.popper.width = `${state.rects.reference.width}px`;
+        console.log(middlewareArguments);
+
+        return {};
     }
 });
 
-export const useBaseModifiers = ({ offset }: { offset: number }) => [
-    offsetModifier(offset),
-    arrowModifier(),
-    preventOverflowModifier(),
-    computeStylesModifier()
+export const useBaseMiddleware = ({
+    offset,
+    arrow
+}: {
+    offset: number;
+    arrow: HTMLElement;
+}) => [
+    offsetMiddleware(offset),
+    arrowMiddleware({
+        element: arrow
+    }),
+    shiftMiddleware(),
+    flipMiddleware(),
+    // sameWidthModifier()
 ];
 
 /**
@@ -67,6 +51,20 @@ export const useBaseModifiers = ({ offset }: { offset: number }) => [
  */
 
 export default defineComponent({
+    data () {
+        return {
+            popupStyles: {
+                position: 'fixed',
+                top: '0',
+                left: '0'
+            },
+            arrowStyles: {
+                position: 'fixed',
+                top: '0',
+                left: '0'
+            }
+        };
+    },
     props: {
         placement: {
             type: String,
@@ -81,16 +79,9 @@ export default defineComponent({
             default: () => ({})
         }
     },
-    data (): { popperInstance?: Instance } {
-        return {
-            popperInstance: undefined
-        };
-    },
     watch: {
-        placement (placement: Placement) {
-            if (this.popperInstance) {
-                this.popperInstance.setOptions({ placement });
-            }
+        placement () {
+            this.createPopper();
         }
     },
     beforeUnmount () {
@@ -102,24 +93,38 @@ export default defineComponent({
                 return;
             }
 
-            const modifiers = useBaseModifiers({ offset: this.offset });
+            const arrow = (this as any).$refs.arrow;
+            const middleware = useBaseMiddleware({
+                offset: this.offset,
+                arrow
+            });
 
-            this.popperInstance = createPopper(
+            computePosition(
                 (this as any).$refs.wrapper,
                 (this as any).$refs.popup,
                 {
                     strategy: 'fixed',
                     placement: this.placement as Placement,
-                    modifiers,
+                    middleware,
                     ...this.popperOptions
                 }
-            );
+            ).then(({ x, y, middlewareData }) => {
+                this.popupStyles.left = `${x}px`;
+                this.popupStyles.top = `${y}px`;
+
+                if (arrow) {
+                    const { x: arrowX, y: arrowY } = middlewareData.arrow as any;
+
+                    this.popupStyles.left = `${arrowX}px`;
+                    this.popupStyles.top = `${arrowY}px`;
+                }
+            });
         },
         destroyPopper () {
-            if (this.popperInstance) {
-                this.popperInstance.destroy();
-                this.popperInstance = undefined;
-            }
+            this.popupStyles.left = '0';
+            this.popupStyles.top = '0';
+            this.arrowStyles.top = '0';
+            this.arrowStyles.top = '0';
         }
     }
 });

@@ -60,7 +60,7 @@
             :aria-hidden="visible ? 'false' : 'true'"
             v-show="visible"
         >
-            <span data-popper-arrow v-if="arrow" />
+            <span ref="arrow" data-popper-arrow v-if="arrow" />
             <div class="select-header" v-if="$slots.header">
                 <slot name="header" />
             </div>

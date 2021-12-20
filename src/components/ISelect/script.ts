@@ -16,7 +16,7 @@ import {
     PopupMixin
 } from '@inkline/inkline/mixins';
 import {
-    useBaseModifiers,
+    useBaseMiddleware,
     sameWidthModifier
 } from '@inkline/inkline/mixins/PopupMixin';
 import { ClickOutside } from '@inkline/inkline/directives';
@@ -271,7 +271,7 @@ export default defineComponent({
             type: Object,
             default: (): any => ({
                 modifiers: [
-                    ...useBaseModifiers({ offset: 8 }),
+                    ...useBaseMiddleware({ offset: 8 }),
                     sameWidthModifier()
                 ]
             })
